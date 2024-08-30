@@ -4,7 +4,8 @@ This Project is for fun, as we have be learning DSA and want to apply some of th
 # Live Link
 https://n-game-genius-solver.vercel.app/about.html
 
-https://github.com/user-attachments/assets/14a0a8da-3245-49c2-8c57-71245cd08b40
+![Home](https://github.com/user-attachments/assets/2216819b-d13f-4592-bc1d-3dee7ade7a6b)
+![About](https://github.com/user-attachments/assets/ed0e6b05-fbeb-4902-90b2-7da93e196cfd)
 
 ## File Structure
 
