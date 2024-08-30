@@ -1,11 +1,12 @@
 # N-Game Genius
-This Project is for fun, as we have be learning DSA and want to apply some of the algorithm in quick way. `N-Game Genius` is a web-based tool designed to help users solve a classic mathematical puzzle where the goal is to make the number `N` using a set of numbers and basic arithmetic operations. It serves both educational and entertainment purposes, helping users sharpen their mathematical and problem-solving skills.
+This project is for fun, as we have Learnt DSA and want to apply some of the algorithms quickly. `N-Game Genius` is a web-based tool designed to help users solve a classic mathematical puzzle that aims to make the number `N` using a set of numbers and basic arithmetic operations. It serves educational and entertainment purposes, helping users sharpen their mathematical and problem-solving skills.
 
 # Live Link
 https://n-game-genius-solver.vercel.app/
 
 ![Home](https://github.com/user-attachments/assets/2216819b-d13f-4592-bc1d-3dee7ade7a6b)
-![About](https://github.com/user-attachments/assets/ed0e6b05-fbeb-4902-90b2-7da93e196cfd)
+![About](https://github.com/user-attachments/assets/969befe5-94b1-4cdb-97e8-eccba02c8f60)
+
 
 ## File Structure
 
