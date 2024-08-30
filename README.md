@@ -1,6 +1,9 @@
 # N-Game Genius
 This Project is for fun, as we have be learning DSA and want to apply some of the algorithm in quick way. `N-Game Genius` is a web-based tool designed to help users solve a classic mathematical puzzle where the goal is to make the number `N` using a set of numbers and basic arithmetic operations. It serves both educational and entertainment purposes, helping users sharpen their mathematical and problem-solving skills.
 
+# Live Link
+https://n-game-genius-solver.vercel.app/about.html
+
 ![Front Page of the Web](path/to/your/image.png)
 
 ## File Structure
@@ -44,7 +47,7 @@ target = 16
 print(solve_n_target(nums, target))  
 #### Expected output: (5 * 4) - (3 + 1) = 16
 
-## Contributor
+# Contributor
 
 ### Advait Gaur
 ### Gopala Jyani
