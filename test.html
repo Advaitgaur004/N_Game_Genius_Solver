@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html nighteye="disabled">
+<head>
+    <title>N Game Genius</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #f0f0f5;
+            padding: 20px;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+        h1 a {
+            text-decoration: none;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        nav {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #007bff;
+            border-bottom: 2px solid transparent;
+        }
+        nav a:hover {
+            border-bottom: 2px solid #007bff;
+        }
+        .description {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        input[type="number"] {
+            width: 210px;
+            padding: 5px;
+            margin: 10px;
+            font-size: 18px;
+            text-align: center;
+            border: 2px solid #ced4da;
+            border-radius: 5px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        input[type="number_input"] {
+            width: 90px;
+            padding: 5px;
+            margin: 10px;
+            font-size: 18px;
+            text-align: center;
+            border: 2px solid #ced4da;
+            border-radius: 5px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .row {
+            margin-bottom: 20px;
+        }
+        #n-input-boxes {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            font-size: 20px;
+            font-style: italic;
+            color: #333;
+        }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="threejs-background"></canvas>
+    <div class="container">
+        <nav>
+            <a href="test.html">Home</a>
+            <a href="about.html">About</a>
+        </nav>
+        <div id="twenty-four-solver">
+            <h1><a href="test.html">Welcome to N-Game Genius</a></h1>
+            <p class="description">
+                This tool helps you solve N-Game Genius, where you can enter a set of numbers and a target value with is N, then find if there’s a combination that results in Tagret Itself. Use this tool to explore various mathematical operations and sharpen your problem-solving skills.
+            </p>
+            <div class="row">
+                <div class="col-md-12">
+                    <form id="solver-form">
+                        <input type="number" id="n-value" class="form-control" min="1" max="10" placeholder="Enter size of array (n)" required>
+                        <input type="number" id="target-value" class="form-control" placeholder="Enter target value" required>
+                        <div id="n-input-boxes" class="mt-3"></div>
+                        <input type="submit" value="Solve" class="btn btn-primary btn-block mt-4">
+                    </form>
+                    <div id="result" class="alert alert-info mt-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.math.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.extras.js"></script>
+    <script>
+        // Three.js 3D background setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('threejs-background'), alpha: true });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        const geometry = new THREE.TorusGeometry(10, 3, 16, 100);
+        const material = new THREE.MeshBasicMaterial({ color: 0x007bff, wireframe: true });
+        const torus = new THREE.Mesh(geometry, material);
+        scene.add(torus);
+
+        camera.position.z = 50;
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            torus.rotation.x += 0.01;
+            torus.rotation.y += 0.01;
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Existing JavaScript logic
+        const form = document.getElementById('solver-form');
+        const nValueInput = document.getElementById('n-value');
+        const targetValueInput = document.getElementById('target-value');
+        const nInputBoxes = document.getElementById('n-input-boxes');
+        const resultDiv = document.getElementById('result');
+
+        nValueInput.addEventListener('input', function () {
+            const n = parseInt(nValueInput.value);
+            nInputBoxes.innerHTML = '';
+            for (let i = 0; i < n; i++) {
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.className = 'form-control mb-2';
+                input.name = 'n' + (i + 1);
+                input.placeholder = `Value ${i + 1}`;
+                input.required = true;
+                nInputBoxes.appendChild(input);
+            }
+        });
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const inputs = document.querySelectorAll('#n-input-boxes input');
+            const target = parseFloat(targetValueInput.value);
+            const values = Array.from(inputs).map(input => parseFloat(input.value));
+
+            // Use the solveNTarget function to calculate the result
+            const result = solveNTarget(values, target);
+
+            resultDiv.textContent = `Expression: ${result}`;
+        });
+
+        function solveNTarget(nums, target) {
+            const operations = ['+', '-', '*', '/'];
+
+            function generateExpressions(nums, ops) {
+                if (nums.length === 1) {
+                    return [nums[0].toString()];
+                }
+                const exprs = [];
+                for (let i = 1; i < nums.length; i++) {
+                    const leftPart = generateExpressions(nums.slice(0, i), ops.slice(0, i - 1));
+                    const rightPart = generateExpressions(nums.slice(i), ops.slice(i - 1));
+                    for (const l of leftPart) {
+                        for (const r of rightPart) {
+                            exprs.push(`(${l} ${ops[i - 1]} ${r})`);
+                        }
+                    }
+                }
+                return exprs;
+            }
+
+            function* permutations(arr) {
+                if (arr.length <= 1) yield arr;
+                else {
+                    for (let i = 0; i < arr.length; i++) {
+                        const rest = [...arr.slice(0, i), ...arr.slice(i + 1)];
+                        for (const perm of permutations(rest)) {
+                            yield [arr[i], ...perm];
+                        }
+                    }
+                }
+            }
+
+            function* product(arr, repeat) {
+                if (repeat === 1) {
+                    for (const item of arr) yield [item];
+                } else {
+                    for (const item of arr) {
+                        for (const rest of product(arr, repeat - 1)) {
+                            yield [item, ...rest];
+                        }
+                    }
+                }
+            }
+
+            function evalExpression(expr) {
+                try {
+                    const value = Function('"use strict";return (' + expr + ')')();
+                    if (isFinite(value)) {
+                        return value;
+                    } else {
+                        throw new ZeroDivisionError();
+                    }
+                } catch (e) {
+                    if (e instanceof ZeroDivisionError) {
+                        return null;
+                    }
+                    throw e;
+                }
+            }
+
+            class ZeroDivisionError extends Error {
+                constructor() {
+                    super('Division by zero occurred.');
+                    this.name = 'ZeroDivisionError';
+                }
+            }
+
+            const numPermutations = Array.from(permutations(nums));
+            const opCombinations = Array.from(product(operations, nums.length - 1));
+
+            for (const numPerm of numPermutations) {
+                for (const ops of opCombinations) {
+                    const expressions = generateExpressions(numPerm, ops);
+                    for (const expr of expressions) {
+                        const value = evalExpression(expr);
+                        if (value !== null && Math.abs(value - target) < 1e-6) {
+                            return expr;
+                        }
+                    }
+                }
+            }
+
+            return "No solution";
+        }
+    </script>
+</body>
+</html>
